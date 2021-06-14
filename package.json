@@ -1,0 +1,29 @@
+{
+  "name": "Employee-Tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "console.table": "^0.10.0",
+    "inquirer": "^8.1.0",
+    "mysql": "^2.18.1",
+    "start": "^5.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twashke/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/twashke/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/twashke/Employee-Tracker#readme"
+}

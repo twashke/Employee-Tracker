@@ -166,6 +166,7 @@ function updateEmployeeManager() {
 
 // Add Departments
 function addDepartment() {
+    let addNewDepartment = "INSERT INTO department (department_name) VALUE (?)"
     inquirer.prompt([
         {
             type: "input",
@@ -173,8 +174,7 @@ function addDepartment() {
             message: "Enter the new department name"
         }
     ]).then(function(answer) {
-        let addNewDepartment = "INSERT INTO department (department_name) VALUE (?)"
-        connection.query(addNewDepartment, answer.newDepartment, (error, response) => {
+        connection.query(addNewDepartment, answer.newDepartment, (error) => {
             if (error) throw error
             console.log(answer.newDepartment + " Department Successfully Created");
             viewDepartments();
@@ -214,8 +214,36 @@ function addEmployee() {
 
 // Delete Departments
 function deleteDepartment() {
-
-}
+    let departments = [];
+    let departmentId;
+    let currentDepartments = "SELECT department.id, department.department_name FROM department";
+    let departmentToDelete = "DELETE FROM department WHERE department.id = ?";
+    
+    connection.query(currentDepartments, (error, response) => {
+        if (error) throw error;
+        response.forEach((department) => {departments.push(department.department_name)
+    });
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "deleteDepartment",
+            message: "Which department would you like to delete?",
+            choices: departments
+        }
+    ]).then((answer) => {
+        response.forEach((department) => {
+            if (answer.deleteDepartment === department.department_name) {
+                departmentId = department.id;
+            }
+        });
+        connection.query(departmentToDelete, [departmentId], (error) => {
+            if (error) throw error
+            console.log(answer.departmentToDelete + " Department Successfully Removed");
+            viewDepartments();
+        });
+    });
+});
+};
 
 // Delete Employee Roles
 function deleteEmployeeRole() {

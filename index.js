@@ -35,6 +35,7 @@ connection.connect((err) => {
 //                Functions                 | 
 // -----------------------------------------|
 
+// Opening Menu Function
 function openingMenu() {
     console.log(openingMessage);
     inquirer.prompt([
@@ -142,7 +143,7 @@ function viewAllEmployees() {
     openingMenu();
 }
 
-Orders.CustomerID=Customers.CustomerID;
+// Orders.CustomerID=Customers.CustomerID;
 
 // View Employee by Manager
 function viewEmployeeByManager() {
@@ -165,13 +166,46 @@ function updateEmployeeManager() {
 
 // Add Departments
 function addDepartment() {
-
-}
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "newDepartment",
+            message: "Enter the new department name"
+        }
+    ]).then(function(answer) {
+        let specialInsert = "INSERT INTO department (department_name) VALUE (?)"
+        connection.query(specialInsert, answer.newDepartment, (error, response) => {
+            if (error) throw error
+            console.log(answer.newDepartment + " Department Successfully Created");
+            viewDepartments();
+        })
+    })
+};
 
 // Add Employee Roles
-function addEmployeeRole() {
-
-}
+// function addEmployeeRole() {
+//     connection.query("SELECT employee_role.title as Title, employee_role.salary AS Salary FROM employee_role", function (error, answer) {
+//         inquirer.prompt([
+//             {
+//             type: "input",
+//             name: "title",
+//             message: "What is the employee role?"
+//             },
+//             {
+//             type: "input",
+//             name: "salary",
+//             message: "What is the salary for this role?"
+//             }
+//         ]).then(function(answer) {
+//             connection.query("INSERT INTO employee_role SET ?",
+//             {
+//                 title: answer.title,
+//                 salary: resizeBy.salary,
+//             },
+//             )
+//         })
+//     })
+// }
 
 // Add Employee
 function addEmployee() {

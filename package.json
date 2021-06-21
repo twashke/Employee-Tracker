@@ -6,15 +6,15 @@
   "dependencies": {
     "chalk": "^4.1.1",
     "console.table": "^0.10.0",
+    "dotenv": "^10.0.0",
     "inquirer": "^8.1.0",
     "mysql": "^2.18.1",
-    "sequelize": "^6.6.2",
     "start": "^5.1.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

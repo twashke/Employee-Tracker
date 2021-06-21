@@ -173,8 +173,8 @@ function addDepartment() {
             message: "Enter the new department name"
         }
     ]).then(function(answer) {
-        let specialInsert = "INSERT INTO department (department_name) VALUE (?)"
-        connection.query(specialInsert, answer.newDepartment, (error, response) => {
+        let addNewDepartment = "INSERT INTO department (department_name) VALUE (?)"
+        connection.query(addNewDepartment, answer.newDepartment, (error, response) => {
             if (error) throw error
             console.log(answer.newDepartment + " Department Successfully Created");
             viewDepartments();

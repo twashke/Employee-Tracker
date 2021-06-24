@@ -30,7 +30,7 @@ VALUE ("Scheduler Lead", 90000, 4);
 INSERT INTO employee_role (title, salary, department_id) 
 VALUE ("Scheduler", 75000, 4);
 INSERT INTO employee_role (title, salary, department_id) 
-VALUE ("Operations Manager", 120000, 5, 9);
+VALUE ("Operations Manager", 120000, 5);
 
 -- Employee Seeds
 
@@ -51,5 +51,5 @@ VALUE ("Brandon", "Baker", 9, 7);
 INSERT INTO employee (first_name, last_name, employee_manager_id, employee_role_id)
 VALUE ("Tiffany", "Miles", 7, 8);
 INSERT INTO employee (first_name, last_name, employee_manager_id, employee_role_id)
-VALUE ("Brad", "Shepard", null, 9);
+VALUE ("Brad", "Shepard", 9, 9);
 

@@ -130,9 +130,9 @@ function viewDepartments() {
 
 // View all Employee Roles
 function viewEmployeeRoles() {
-    const specialQuery = `SELECT employee_role.title, employee_role.salary, department.department_name 
+    const specialQuery = `SELECT employee_role.id, employee_role.title, employee_role.salary, department.department_name 
     AS Department FROM employee JOIN employee_role ON employee.employee_role_id = employee_role.id 
-    JOIN department ON employee_role.department_id = department.id `
+    JOIN department ON employee_role.department_id = department.id`
     connection.query(specialQuery, function(error, result) {
         if (error) throw error;
         console.log("");
@@ -146,7 +146,7 @@ function viewEmployeeRoles() {
 
 // View all Employees 
 function viewAllEmployees() {
-    const specialQuery = `SELECT employee.first_name, employee.last_name, employee_role.title, employee_role.salary, 
+    const specialQuery = `SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, employee_role.salary, 
     department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee 
     INNER JOIN employee_role on employee_role.id = employee.employee_role_id 
     INNER JOIN department on department.id = employee_role.department_id 

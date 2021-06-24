@@ -35,7 +35,7 @@ connection.connect((err) => {
 });
 
 // -----------------------------------------|
-//                Functions                 | 
+//          Opening Menu Function           | 
 // -----------------------------------------|
 
 // Opening Menu Function
@@ -111,6 +111,10 @@ function openingMenu() {
     })
 };
 
+// -----------------------------------------|
+//             View Functions               | 
+// -----------------------------------------|
+
 // View all Departments
 function viewDepartments() {
     connection.query("SELECT * FROM department", function(error, result) {
@@ -158,24 +162,33 @@ function viewAllEmployees() {
     });
 }
 
-// View Employee by Manager
-function viewEmployeeByManager() {
-    openingMenu();
-}
-// View Total Utilized Budget of a Department
-function viewTotalBudget() {
-    openingMenu();
-}
+// // View Employee by Manager
+// function viewEmployeeByManager() {
+//     openingMenu();
+// }
+// // View Total Utilized Budget of a Department
+// function viewTotalBudget() {
+//     openingMenu();
+// }
+
+// -----------------------------------------|
+//           Update Functions               | 
+// -----------------------------------------|
+
 
 // Update Employee Roles
 function updateEmployeeRole() {
     viewEmployeeRoles();
 }
 
-// Update Employee Managers
-function updateEmployeeManager() {
-    viewEmployeeByManager();
-}
+// // Update Employee Managers
+// function updateEmployeeManager() {
+//     viewEmployeeByManager();
+// }
+
+// -----------------------------------------|
+//              Add Functions               | 
+// -----------------------------------------|
 
 // Add Departments
 function addDepartment() {
@@ -237,6 +250,10 @@ function addDepartment() {
 function addEmployee() {
 
 }
+
+// -----------------------------------------|
+//           Delete Functions               | 
+// -----------------------------------------|
 
 // Delete Departments
 function deleteDepartment() {
@@ -336,6 +353,11 @@ function deleteEmployeeRole() {
 //     });
 // });
 // }
+
+// -----------------------------------------|
+//      Misc Functions for Functions        | 
+// -----------------------------------------|
+
 // let departmentArr = [];
 // // Select Department Query for Add New Role
 // function departmentNames() {

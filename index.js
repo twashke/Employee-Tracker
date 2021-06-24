@@ -178,17 +178,63 @@ function viewAllEmployees() {
 
 // Update Employee Roles
 function updateEmployeeRole() {
-    viewEmployeeRoles();
-}
+    const specialQuery = `SELECT employee.first_name, employee.last_name, employee_role.title FROM employee JOIN employee_role ON employee.employee_role_id = employee_role.id;`
+    connection.query(specialQuery, function(error, result) {
+        // console.log(res)
+        if (error) throw error
+        console.log(result)
+    });
+}; 
 
-// // Update Employee Managers
-// function updateEmployeeManager() {
-//     viewEmployeeByManager();
+//         inquirer.prompt([
+//             {
+//             name: "lastName",
+//             type: "rawlist",
+//             choices: function() {
+//             var lastName = [];
+//             for (var i = 0; i < res.length; i++) {
+//             lastName.push(res[i].last_name);
+//             }
+//             return lastName;
+//             },
+//             message: "What is the Employee's last name? ",
+//               },
+//               {
+//                 name: "role",
+//                 type: "rawlist",
+//                 message: "What is the Employees new title? ",
+//                 choices: selectRole()
+//               },
+//           ]).then(function(val) {
+//             var roleId = selectRole().indexOf(val.role) + 1
+//             connection.query("UPDATE employee SET WHERE ?", 
+//             {
+//               last_name: val.lastName
+               
+//             }, 
+//             {
+//               role_id: roleId
+               
+//             }, 
+//             function(err){
+//                 if (err) throw err
+//                 console.table(val)
+               
+//             })
+      
+//         });
+//       });
+//     viewEmployeeRoles();
 // }
 
-// -----------------------------------------|
-//              Add Functions               | 
-// -----------------------------------------|
+// // // Update Employee Managers
+// // function updateEmployeeManager() {
+// //     viewEmployeeByManager();
+// // }
+
+// // -----------------------------------------|
+// //              Add Functions               | 
+// // -----------------------------------------|
 
 // Add Departments
 function addDepartment() {
@@ -202,10 +248,12 @@ function addDepartment() {
     ]).then(function(answer) {
         connection.query(addNewDepartment, answer.newDepartment, (error) => {
             if (error) throw error
-            console.log(chalk.bgcyan("Department Successfully Created"));
+            console.log("");
+            console.log(chalk.bgCyan("Department Successfully Created"));
             viewDepartments();
+            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
+            openingMenu();
         })
-        openingMenu();
     })
 };
 
@@ -281,7 +329,9 @@ function deleteDepartment() {
         });
         connection.query(departmentToDelete, [departmentId], (error) => {
             if (error) throw error
+            console.log("");
             console.log(chalk.bgCyan("Department Successfully Removed"));
+            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
             viewDepartments();
         });
     });
@@ -314,7 +364,9 @@ function deleteEmployeeRole() {
         });
         connection.query(employeeToDelete, [employeeRoleId], (error) => {
             if (error) throw error
+            console.log("");
             console.log(chalk.bgCyan("Employee Role Successfully Removed"));
+            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
             viewEmployeeRoles();
         });
     });

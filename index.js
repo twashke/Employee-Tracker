@@ -260,9 +260,12 @@ function addDepartment() {
 // Add Employee Roles
 function addEmployeeRole() {
     let addNewRole = "SELECT employee_role.title as Title, employee_role.salary AS Salary FROM employee_role";
+    getDepartments();
     connection.query(addNewRole, (error, result) => {
         if (error) throw error;
-        getDepartments();
+        const deptName = departmentArr.map((department) => {
+            return department.department_name;
+        })
         inquirer.prompt([
             {
             type: "input",
@@ -278,20 +281,24 @@ function addEmployeeRole() {
             type: "list",
             name: "DepartmentID",
             message: "What Department does this new role belong to?",
-            choices: departmentArr,
+            choices: deptName,
             }
         ]).then(function(answer) {
-            let idDepartment;
-            if (answer.DepartmentID == departmentArr[i]) {
-                idDepartment = departmentIdArr
-            }
+            const dept = departmentArr.find((department) => {
+                return department.department_name === answer.DepartmentID;
+            })
             connection.query("INSERT INTO employee_role SET ?",
             {
                 title: answer.Title,
                 salary: answer.Salary,
-                department_id: idDepartment
+                department_id: dept.id
             }, function (error) {
                 if (error) throw error
+                console.log("");
+                console.log(chalk.bgCyan("Employee Role Successfully Created"));
+                viewEmployeeRoles();
+                console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
+                openingMenu();
             })
     })
 });
@@ -429,15 +436,10 @@ function deleteEmployeeRole() {
 //      Misc Functions for Functions        | 
 // -----------------------------------------|
 let departmentArr = [];
-let departmentIdArr = [];
 // Select Department Query for Add New Role
 function getDepartments() {
     connection.query('SELECT id, department_name FROM department ORDER BY department_name', (error, result) => {
         if(error) throw error;
-        for (i=0; i < result.length; i++){
-            departmentArr.push(result[i].department_name);
-        } for (i=0; i < result.length; i++){
-            departmentIdArr.push(result[i].id);   
-        }
+        departmentArr = result;
     })
 }

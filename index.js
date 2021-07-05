@@ -131,8 +131,7 @@ function viewDepartments() {
 // View all Employee Roles
 function viewEmployeeRoles() {
     const specialQuery = `SELECT employee_role.id, employee_role.title, employee_role.salary, department.department_name 
-    AS Department FROM employee JOIN employee_role ON employee.employee_role_id = employee_role.id 
-    JOIN department ON employee_role.department_id = department.id`
+    FROM employee_role INNER JOIN department ON department.id = employee_role.department_id;`
     connection.query(specialQuery, function(error, result) {
         if (error) throw error;
         console.log("");
@@ -292,14 +291,16 @@ function addEmployeeRole() {
                 title: answer.Title,
                 salary: answer.Salary,
                 department_id: dept.id
-            }, function (error) {
+            }, 
+            function (error) {
                 if (error) throw error
                 console.log("");
                 console.log(chalk.bgCyan("Employee Role Successfully Created"));
                 viewEmployeeRoles();
                 console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-                openingMenu();
+            
             })
+        openingMenu()
     })
 });
 };
@@ -393,8 +394,9 @@ function deleteEmployeeRole() {
             console.log("");
             console.log(chalk.bgCyan("Employee Role Successfully Removed"));
             console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-            viewEmployeeRoles();
+
         });
+        viewEmployeeRoles();
     });
 });
 };
@@ -443,3 +445,4 @@ function getDepartments() {
         departmentArr = result;
     })
 }
+

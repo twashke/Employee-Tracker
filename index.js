@@ -385,7 +385,7 @@ function deleteEmployeeRole() {
         }
     ]).then((answer) => {
         response.forEach((employee_role) => {
-            if (answer.employeeToDelete === employee_role.title) {
+            if (answer.deleteEmployeeRole === employee_role.title) {
                 employeeRoleId = employee_role.id;
             }
         });

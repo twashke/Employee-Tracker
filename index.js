@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const chalk = require("chalk");
 const consoleTable = require("console.table");
 const figlet = require("figlet");
-const clear = console.clear();
+
 
 // Enable access to .env variables
 require('dotenv').config();
@@ -51,11 +51,11 @@ function openingMenu() {
                     "View all Employees",
                     "View Employee by Manager",
                     "View Total Utilized Budget of a Department",
-                    "Update Employee Role",
-                    "Update Employee Manager",
                     "Add Department",
                     "Add Employee Role",
                     "Add Employee",
+                    "Update Employee Role",
+                    "Update Employee Manager",
                     "Delete Department",
                     "Delete Employee Role",
                     "Delete Employee",
@@ -174,7 +174,7 @@ function viewEmployeeByManager() {
                 choices: function () {
                     const managerArr = [];
                     result.forEach(({id, first_name, last_name}) => {
-                        managerArr.push(`${id}, ${first_name}, ${last_name}`);
+                        managerArr.push(`${id} ${first_name} ${last_name}`);
                     });
                     return managerArr;
                 }

@@ -101,8 +101,8 @@ function openingMenu() {
             case "Delete Employee Role":
                 deleteEmployeeRole();
                 break;
-            // case "Delete Employee":
-            //     deleteEmployee();
+            case "Delete Employee":
+                deleteEmployee();
                 break;
             case "Exit":
                 console.log(chalk.cyanBright.bold(figlet.textSync("Session Ended, Thank You!")));
@@ -197,11 +197,17 @@ function updateEmployeeRole() {
             }
             },
         ]).then(function(answer) {
-            connection.query(`UPDATE employee SET employee_role_id = ${answer.newRole[0]} WHERE id = ${answer.updateEmployee[0]}`,
+            const employeeAnswer = parseInt(answer.updateEmployee);
+            const roleAnswer = parseInt(answer.newRole);
+            const employee = employeeAnswer;
+            const updatedRole = roleAnswer;
+            console.log(employee, updatedRole);
+            connection.query(`UPDATE employee SET employee_role_id = ${updatedRole} WHERE id = ${employee}`,
             (error, result) => {
                 if (error) throw error
                 console.log("");
                 console.log(chalk.bgCyan("Employee Role Successfully Updated"));
+                console.log(result);
             });
             viewAllEmployees();
         });
@@ -282,6 +288,7 @@ function addEmployeeRole() {
     });
 };
 
+// Add New Employee
 function addEmployee() {
     getRole();
     const manager = `SELECT * FROM employee`;
@@ -403,7 +410,7 @@ function deleteEmployeeRole() {
             }
         });
         connection.query(employeeToDelete, [employeeRoleId], (error) => {
-            if (error) throw error
+            if (error) throw error;
             console.log("");
             console.log(chalk.bgCyan("Employee Role Successfully Removed"));
 
@@ -413,40 +420,36 @@ function deleteEmployeeRole() {
 });
 };
 
-// // Delete Employee
-// function deleteEmployee() {
-//     let employee = [];
-//     let employeeRoleId;
-//     let currentEmployees = "SELECT CONCAT employee.first_name, employee.last_night, CONCAT(e.first_name, ' ' ,e.last_name) FROM employee";
-//     let employeeToDelete = "DELETE FROM employee WHERE employee_role.id = ?";
-    
-//     connection.query(currentEmployees, (error, response) => {
-//         if (error) throw error;
-//         response.forEach((employee) => {employee.push(employee_role.title)
-//     });
-//     inquirer.prompt([
-//         {
-//             type: "list",
-//             name: "deleteEmployee",
-//             message: "Which Employee would you like to delete?",
-//             choices: currentEmployees
-//         }
-//     ]).then((answer) => {
-//         response.forEach((employee_role) => {
-//             if (answer.employeeToDelete === employee_role.title) {
-//                 employeeRoleId = employee_role.id;
-//             }
-//         });
-//         connection.query(employeeToDelete, [employeeRoleId], (error) => {
-//             if (error) throw error
-//             console.log(chalk.bgCyan("Employee Role Successfully Removed"));
-//             viewEmployeeRoles();
-//         });
-//     });
-// });
-// }
-
-
+// Delete Employee
+function deleteEmployee() {
+    const employees = `SELECT * FROM employee`;
+    connection.query(employees, (error, result) => {
+        if (error) throw error;
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "deleteEmployee",
+            message: "Which employee would you like to delete?",
+            choices: function () {
+                let employeeArr = []
+                result.forEach(({id, first_name, last_name}) => {
+                    employeeArr.push(`${id} ${first_name} ${last_name}`);
+                });
+                return employeeArr;
+            },
+        },
+    ]).then(function(answer) {
+        const deleteEmployeeAnswer = parseInt(answer.deleteEmployee);
+        const deleteEmployee = `DELETE employee FROM employee WHERE id = ${deleteEmployeeAnswer}`
+        connection.query(deleteEmployee, (error) => {
+            if (error) throw error;
+            console.log("");
+            console.log(chalk.bgCyan("Employee Successfully Removed"));
+        });
+        viewAllEmployees();
+    })
+});
+};
 
 // -----------------------------------------|
 //      Misc Functions for Functions        | 

@@ -73,19 +73,18 @@ function openingMenu() {
             case "View all Employees":
                 viewAllEmployees();
                 break;
-            // case "View Employee by Manager":
-            //     viewEmployeeByManager();
-            //     break;
-            // case "View Total Utilized Budget of a Department":
-            //     viewTotalBudget();
-            //     break;
-            // Working
+            case "View Employee by Manager":
+                viewEmployeeByManager();
+                break;
+            case "View Total Utilized Budget of a Department":
+                viewTotalBudget();
+                break;
             case "Update Employee Role":
                 updateEmployeeRole();
                 break;
-            // case "Update Employee Manager":
-            //     updateEmployeeManager();
-            //     break;
+            case "Update Employee Manager":
+                updateEmployeeManager();
+                break;
             case "Add Department":
                 addDepartment();
                 break;
@@ -162,6 +161,56 @@ function viewAllEmployees() {
     });
 }
 
+// View by Employee Manager
+function viewEmployeeByManager() {
+    const manager = `SELECT * FROM employee`;
+    connection.query(manager, (error, result) => {
+        if (error) throw error;
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "managerView",
+                message: "Select manager to view the employees they manage!",
+                choices: function () {
+                    const managerArr = [];
+                    result.forEach(({id, first_name, last_name}) => {
+                        managerArr.push(`${id}, ${first_name}, ${last_name}`);
+                    });
+                    return managerArr;
+                }
+            }
+        ]).then(function(answer) {
+            const managerAnswer = parseInt(answer.managerView);
+            const managerID = managerAnswer;
+            connection.query(`SELECT * FROM employee WHERE ?`, 
+            {
+                employee_manager_id: managerID,
+            }, (error, result) => {
+                if (error) throw error;
+                console.log("");
+                console.log(chalk.bgMagenta("      Employee's By Manager   "));
+                console.log(chalk.cyanBright(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`));
+                console.table(result);
+                console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
+                openingMenu();
+            })
+        })
+    })
+}
+
+// View total budget for each department
+function viewTotalBudget() {
+    const departmentBudget = `SELECT department_id, SUM(salary) salary, department.department_name FROM employee_role LEFT JOIN department ON employee_role.department_id = department.id GROUP BY department_id`;
+    connection.query(departmentBudget, (error, result) => {
+        if (error) throw error;
+        console.log(chalk.bgMagenta("      Total Budget Per Department     "));
+        console.log(chalk.cyanBright(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`));
+        console.table(result);
+        console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
+        openingMenu();
+    })
+}
+
 // -----------------------------------------|
 //           Update Functions               | 
 // -----------------------------------------|
@@ -214,10 +263,10 @@ function updateEmployeeRole() {
     });
 };
 
-// // // Update Employee Managers
-// // function updateEmployeeManager() {
-// //     viewEmployeeByManager();
-// // }
+// Update Employee Managers
+function updateEmployeeManager() {
+    
+}
 
 // // -----------------------------------------|
 // //              Add Functions               | 

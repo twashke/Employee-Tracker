@@ -73,18 +73,19 @@ function openingMenu() {
             case "View all Employees":
                 viewAllEmployees();
                 break;
-            case "View Employee by Manager":
-                viewEmployeeByManager();
-                break;
-            case "View Total Utilized Budget of a Department":
-                viewTotalBudget();
-                break;
+            // case "View Employee by Manager":
+            //     viewEmployeeByManager();
+            //     break;
+            // case "View Total Utilized Budget of a Department":
+            //     viewTotalBudget();
+            //     break;
+            // Working
             case "Update Employee Role":
                 updateEmployeeRole();
                 break;
-            case "Update Employee Manager":
-                updateEmployeeManager();
-                break;
+            // case "Update Employee Manager":
+            //     updateEmployeeManager();
+            //     break;
             case "Add Department":
                 addDepartment();
                 break;
@@ -100,8 +101,8 @@ function openingMenu() {
             case "Delete Employee Role":
                 deleteEmployeeRole();
                 break;
-            case "Delete Employee":
-                deleteEmployee();
+            // case "Delete Employee":
+            //     deleteEmployee();
                 break;
             case "Exit":
                 console.log(chalk.cyanBright.bold(figlet.textSync("Session Ended, Thank You!")));
@@ -161,70 +162,51 @@ function viewAllEmployees() {
     });
 }
 
-// // View Employee by Manager
-// function viewEmployeeByManager() {
-//     openingMenu();
-// }
-// // View Total Utilized Budget of a Department
-// function viewTotalBudget() {
-//     openingMenu();
-// }
-
 // -----------------------------------------|
 //           Update Functions               | 
 // -----------------------------------------|
 
-
-// // Update Employee Roles
-// function updateEmployeeRole() {
-//     const specialQuery = `SELECT employee.first_name, employee.last_name, employee_role.title FROM employee JOIN employee_role ON employee.employee_role_id = employee_role.id;`
-//     connection.query(specialQuery, function(error, result) {
-//         // console.log(res)
-//         if (error) throw error
-//         console.table(result)
-//     });
-// }; 
-
-//         inquirer.prompt([
-//             {
-//             name: "lastName",
-//             type: "rawlist",
-//             choices: function() {
-//             var lastName = [];
-//             for (var i = 0; i < res.length; i++) {
-//             lastName.push(res[i].last_name);
-//             }
-//             return lastName;
-//             },
-//             message: "What is the Employee's last name? ",
-//               },
-//               {
-//                 name: "role",
-//                 type: "rawlist",
-//                 message: "What is the Employees new title? ",
-//                 choices: selectRole()
-//               },
-//           ]).then(function(val) {
-//             var roleId = selectRole().indexOf(val.role) + 1
-//             connection.query("UPDATE employee SET WHERE ?", 
-//             {
-//               last_name: val.lastName
-               
-//             }, 
-//             {
-//               role_id: roleId
-               
-//             }, 
-//             function(err){
-//                 if (err) throw err
-//                 console.table(val)
-               
-//             })
-      
-//         });
-//       });
-//     viewEmployeeRoles();
-// }
+// Update Employee Roles
+function updateEmployeeRole() {
+    let updateRole = `SELECT * FROM employee`
+    getRole();
+    connection.query(updateRole, (error, result) => {
+        inquirer.prompt([
+            {
+            type: "list",
+            name: "updateEmployee",
+            message: "Choose an employee to update their role",
+            choices: function () {
+                let choiceArr = []
+                result.forEach(({id, first_name, last_name}) => {
+                    choiceArr.push(`${id} ${first_name} ${last_name}`);
+                });
+                return choiceArr;
+            },
+            },
+            {
+            type: "list",
+            name: "newRole",
+            message: "What is the new role of the employee?",
+            choices: function () {
+                let newroleArr = []
+                roleArr.forEach(({id, title}) => {
+                    newroleArr.push(`${id} ${title}`);
+                });
+                return newroleArr;
+            }
+            },
+        ]).then(function(answer) {
+            connection.query(`UPDATE employee SET employee_role_id = ${answer.newRole[0]} WHERE id = ${answer.updateEmployee[0]}`,
+            (error, result) => {
+                if (error) throw error
+                console.log("");
+                console.log(chalk.bgCyan("Employee Role Successfully Updated"));
+            });
+            viewAllEmployees();
+        });
+    });
+};
 
 // // // Update Employee Managers
 // // function updateEmployeeManager() {
@@ -242,17 +224,15 @@ function addDepartment() {
         {
             type: "input",
             name: "newDepartment",
-            message: "Enter the new department name"
+            message: "Enter the new department name",
         }
     ]).then(function(answer) {
         connection.query(addNewDepartment, answer.newDepartment, (error) => {
             if (error) throw error
             console.log("");
             console.log(chalk.bgCyan("Department Successfully Created"));
-            viewDepartments();
-            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-            openingMenu();
         })
+        viewDepartments();
     })
 };
 
@@ -269,12 +249,12 @@ function addEmployeeRole() {
             {
             type: "input",
             name: "Title",
-            message: "What is the employee role?"
+            message: "What is the employee role?",
             },
             {
             type: "input",
             name: "Salary",
-            message: "What is the salary for this role?"
+            message: "What is the salary for this role?",
             },
             {
             type: "list",
@@ -296,35 +276,69 @@ function addEmployeeRole() {
                 if (error) throw error
                 console.log("");
                 console.log(chalk.bgCyan("Employee Role Successfully Created"));
-                viewEmployeeRoles();
-                console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-            
             })
-        openingMenu()
-    })
-});
+            viewEmployeeRoles();
+        })
+    });
 };
 
-// // Add Employee
-// function addEmployee() {
-//     let addNewDepartment = "INSERT INTO department (department_name) VALUE (?)"
-//     inquirer.prompt([
-//         {
-//             type: "input",
-//             name: "EmployeeFirstName",
-//             message: "Enter the Employee First Name"
-//         }
-//         ]).then(function(answer) {
-//             connection.query(addNewDepartment, answer.newDepartment, (error) => {
-//                 if (error) throw error
-//                 console.log("");
-//                 console.log(chalk.bgCyan("Department Successfully Created"));
-//                 viewDepartments();
-//                 console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-//                 openingMenu();
-//             })
-//         })
-//     };
+function addEmployee() {
+    getRole();
+    const manager = `SELECT * FROM employee`;
+    connection.query(manager, (error, result) => {
+        if (error) throw error;
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "Enter the employee's first name!",
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "Enter the employee's last name!",
+        },
+        {
+            type: "list",
+            name: "roleTitle",
+            message: "What is the employee's role?",
+            choices: function () {
+                let newRoleArr = []
+                roleArr.forEach(({id, title}) => {
+                    newRoleArr.push(`${id} ${title}`);
+                });
+                return newRoleArr;
+            },
+        },
+        {
+            type: "list",
+            name: "empManager",
+            message: "Who is the employee's manager?",
+            choices: function () {
+                let managerArr = []
+                result.forEach(({id, first_name, last_name}) => {
+                    managerArr.push(`${id} ${first_name} ${last_name}`);
+                });
+                return managerArr;
+            },
+        },
+    ]).then(function(answer) {
+        connection.query(`INSERT employee SET ?`, 
+        {
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            employee_role_id: answer.roleTitle[0],
+            employee_manager_id: answer.empManager[0],
+        },
+        (error, result) => {
+            if (error) throw error
+            console.log("");
+            console.log(chalk.bgCyan("New Employee Successfully Added!"));
+        });
+        viewAllEmployees();
+    })
+});
+}
 
 // -----------------------------------------|
 //           Delete Functions               | 
@@ -358,9 +372,8 @@ function deleteDepartment() {
             if (error) throw error
             console.log("");
             console.log(chalk.bgCyan("Department Successfully Removed"));
-            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
-            viewDepartments();
         });
+        viewDepartments();
     });
 });
 };
@@ -393,7 +406,6 @@ function deleteEmployeeRole() {
             if (error) throw error
             console.log("");
             console.log(chalk.bgCyan("Employee Role Successfully Removed"));
-            console.log(chalk.cyanBright("~~~~~~~~~~~ Employee Tracker Menu ~~~~~~~~~~~"));
 
         });
         viewEmployeeRoles();
@@ -434,6 +446,8 @@ function deleteEmployeeRole() {
 // });
 // }
 
+
+
 // -----------------------------------------|
 //      Misc Functions for Functions        | 
 // -----------------------------------------|
@@ -444,5 +458,15 @@ function getDepartments() {
         if(error) throw error;
         departmentArr = result;
     })
+};
+
+let roleArr = [];
+// Select Role Query for Add New Employee
+function getRole() {
+    connection.query('SELECT id, title FROM employee_role', (error, result) => {
+        if(error) throw error;
+        roleArr = result;
+    })
 }
+
 

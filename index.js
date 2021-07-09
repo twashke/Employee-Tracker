@@ -250,7 +250,6 @@ function updateEmployeeRole() {
             const roleAnswer = parseInt(answer.newRole);
             const employee = employeeAnswer;
             const updatedRole = roleAnswer;
-            console.log(employee, updatedRole);
             connection.query(`UPDATE employee SET employee_role_id = ${updatedRole} WHERE id = ${employee}`,
             (error, result) => {
                 if (error) throw error
@@ -265,7 +264,47 @@ function updateEmployeeRole() {
 
 // Update Employee Managers
 function updateEmployeeManager() {
-    
+    let updateManager = `SELECT * FROM employee`;
+    connection.query(updateManager, (error, result) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "employeeUpdate",
+                message: "Choose employee to update manager.",
+                choices: function () {
+                    const employeeUpdateArr = [];
+                    result.forEach(({id, first_name, last_name}) => {
+                        employeeUpdateArr.push(`${id} ${first_name} ${last_name}`);
+                    });
+                    return employeeUpdateArr;
+                }
+            },
+            {
+                type: "list",
+                name: "updateManager",
+                message: "Which manager is now supervising this employee?",
+                choices: function () {
+                    const managerUpdateArr = [];
+                    result.forEach(({id, first_name, last_name}) => {
+                        managerUpdateArr.push(`${id} ${first_name} ${last_name}`);
+                    });
+                    return managerUpdateArr;
+                }
+            }, 
+        ]).then(function(answer) {
+            const updateEmployee = parseInt(answer.employeeUpdate);
+            const managerUpdate = parseInt(answer.updateManager);
+            const updatedEmployee = updateEmployee;
+            const updatedManager = managerUpdate;
+            connection.query(`UPDATE employee SET employee_manager_id = ${updatedManager} WHERE id = ${updatedEmployee}`,
+            (error, result) => {
+                if (error) throw error
+                console.log("");
+                console.log(chalk.bgCyan("Employee Manager Successfully Updated"));
+            });
+            viewAllEmployees();
+        });
+    })
 }
 
 // // -----------------------------------------|

@@ -72,7 +72,7 @@ Update Employee Roles \
 ![Update Employee Roles](assets/update-employee-role.png)
 
 Update Employee Managers \
-![Update Employee Manager](assets/update-employee-manager.png)
+![Update Employee Manager](assets/update-manager.png)
 
 Delete Departments \
 ![Delete Departments](assets/delete-department.png)

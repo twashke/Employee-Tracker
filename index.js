@@ -255,7 +255,6 @@ function updateEmployeeRole() {
                 if (error) throw error
                 console.log("");
                 console.log(chalk.bgCyan("Employee Role Successfully Updated"));
-                console.log(result);
             });
             viewAllEmployees();
         });

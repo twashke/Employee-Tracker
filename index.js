@@ -50,7 +50,7 @@ function openingMenu() {
                     "View all Employees Roles",
                     "View all Employees",
                     "View Employee by Manager",
-                    "View Total Utilized Budget of a Department",
+                    "View Total Utilized Budget of each Department",
                     "Add Department",
                     "Add Employee Role",
                     "Add Employee",
@@ -76,7 +76,7 @@ function openingMenu() {
             case "View Employee by Manager":
                 viewEmployeeByManager();
                 break;
-            case "View Total Utilized Budget of a Department":
+            case "View Total Utilized Budget of each Department":
                 viewTotalBudget();
                 break;
             case "Update Employee Role":

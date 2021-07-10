@@ -4,7 +4,7 @@
 
 ## Description
 
-The [Employee Tracker](https://github.com/twashke/Employee-Tracker) is a command line application used to view, add, update and delete Employee information from a MySQL database. Utilizing multiple different npm packages, this application can help the user view Employee information as well as add, update and delete it. A walkthrough demonstrating the applications functionality can be found [here]().
+The [Employee Tracker](https://github.com/twashke/Employee-Tracker) is a command line application used to view, add, update and delete Employee information from a MySQL database. Utilizing multiple different npm packages, this application can help the user view Employee information as well as add, update and delete it. A walkthrough demonstrating the applications functionality can be found [here](https://drive.google.com/file/d/1WCKYPuhPxdZgxkoqQwQ_Na5QE7spWJF_/view?usp=sharing).
 
 ## Table of Contents
 
@@ -42,7 +42,7 @@ The [Employee Tracker](https://github.com/twashke/Employee-Tracker) is a command
 
 ## Usage
 
-- View the [Employee Tracker Walkthrough]() for how to use this application.
+- View the [Employee Tracker Walkthrough](https://drive.google.com/file/d/1WCKYPuhPxdZgxkoqQwQ_Na5QE7spWJF_/view?usp=sharing) for how to use this application.
 
 View Departments \
 ![View Departments](assets/view-departments.png)
